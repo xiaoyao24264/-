@@ -108,3 +108,13 @@ curl -s "https://push2delay.eastmoney.com/api/qt/clist/get?pn=1&pz=100&po=1&np=1
 ## 技术笔记
 - pip在WSL里没有权限安装，需要找其他方式
 - 东方财富API用push2delay.eastmoney.com域名可以稳定访问
+- 腾讯云SSH密码登录需修改/etc/ssh/sshd_config加PasswordAuthentication yes
+- OpenCloudOS用yum不是apt-get
+- PostgreSQL需要手动初始化：pg_ctl initdb -D /var/lib/pgsql/data
+
+## Riot API账号
+- 账号：XiaoYao24264
+- 密码：HAOyan123.
+- API Key：RGAPI-469b9f4b-66e9-4b12-afef-7a5bd1705cf4
+- Key有效，已测试可用（br1.api可用）
+- 申请地址：https://developer.riotgames.com/
