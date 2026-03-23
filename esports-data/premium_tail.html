@@ -1,0 +1,7 @@
+error="this.style.display='none'"><img src="https://api.opendota.com/api/players/'+p.account_id+'/avatar" style="width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.06)" onerror="this.style.display='none'"><div><div style="font-size:13px;font-weight:600">'+(p.name||'Unknown')+'</div><div style="font-size:11px;color:var(--text-dim);margin-top:2px">'+p.games_played+' games &middot; '+wr+'% WR</div></div></div>'}
+html+='</div></div>'}
+html+='<div style="text-align:center;margin-top:8px"><a href="https://www.opendota.com/teams/'+teamId+'" target="_blank" style="color:var(--accent);font-size:12px;text-decoration:none">View Full Stats on OpenDota &rarr;</a></div>'
+document.getElementById('modal-team-body').innerHTML=html}
+function loadAll(){loadRankings();loadRecent();loadLeagues()}
+document.addEventListener('DOMContentLoaded',loadAll);
+</script></body></html>

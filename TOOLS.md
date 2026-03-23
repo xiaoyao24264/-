@@ -21,6 +21,12 @@ Things like:
 ### WeGame
 - 路径：`C:\Program Files (x86)\WeGame\wegame.exe`
 
+### 云服务器
+- IP: 134.175.217.108
+- 用户名: root
+- 密码: （问少爷）
+- SSH Windows 跳板机: `172.20.48.1` / `changhaoyan`
+
 ### SSH Windows 连接
 
 - Windows IP: `172.20.48.1`

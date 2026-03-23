@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>凌悦电竞数据</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#090a0d;--accent:#d4490f;--gold:#c9a96e;--text:#e8e4dc;--text-dim:rgba(232,228,220,0.6);--text-muted:rgba(232,228,220,0.35);--card-bg:rgba(16,17,23,0.92);--border:rgba(255,255,255,0.08);--border-hover:rgba(255,255,255,0.14)}
+body{font-family:'Inter','PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(9,10,13,0.88) 0%,rgba(9,10,13,0.75) 50%,rgba(9,10,13,0.88) 100%),url('/static/bg.jpg') center/cover no-repeat fixed}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:rgba(255,255,255,0.02)}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:3px}
+.header{position:sticky;top:0;z-index:100;background:rgba(9,10,13,0.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.header-inner{max-width:1400px;margin:0 auto;padding:0 24px}
+.header-top{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.logo{font-size:20px;font-weight:800;letter-spacing:2px;color:var(--text)}
+.logo span{color:var(--accent)}
+.header-right{display:flex;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);transition:all 0.2s;font-family:inherit}
+.btn:hover{border-color:var(--border-hover);background:rgba(255,255,255,0.08);transform:translateY(-1px)}
+.game-tabs{display:flex;gap:4px}
+.game-tab{padding:10px 20px;font-size:14px;font-weight:600;color:var(--text-muted);cursor:pointer;border:1px solid transparent;border-radius:8px 8px 0 0;transition:all 0.2s;font-family:inherit;background:none}
+.game-tab.active{color:var(--text);background:var(--card-bg);border-color:var(--border);border-bottom-color:var(--card-bg)}
+.game-tab.disabled{opacity:0.35;cursor:not-allowed;pointer-events:none}
+.sub-nav{background:rgba(16,17,23,0.7);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.sub-nav-inner{max-width:1400px;margin:0 auto;padding:0 24px;display:flex;align-items:center}
+.sub-tab{padding:12px 20px;font-size:14px;font-weight:500;color:var(--text-dim);cursor:pointer;border:none;background:none;font-family:inherit;transition:all 0.2s;position:relative}
+.sub-tab::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--accent);border-radius:2px 2px 0 0;transition:width 0.2s}
+.sub-tab.active{color:var(--text)}
+.sub-tab.active::after{width:100%}
+.sub-meta{margin-left:auto;font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:12px}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#e74c3c;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}
+.main{max-width:1400px;margin:0 auto;padding:32px 24px}
+.hero{margin-bottom:28px}
+.hero-title{font-size:34px;font-weight:800;margin-bottom:6px;letter-spacing:-0.5px}
+.hero-sub{font-size:14px;color:var(--text-dim);margin-bottom:24px}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:22px;backdrop-filter:blur(20px);transition:all 0.25s;cursor:default}
+.stat-card:hover{border-color:rgba(212,73,15,0.35);box-shadow:0 0 24px rgba(212,73,15,0.12),0 8px 32px rgba(0,0,0,0.3);transform:translateY(-2px)}
+.stat-label{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.stat-value{font-size:40px;font-weight:900;line-height:1;letter-spacing:-2px}
+.stat-value.accent{color:var(--accent)}
+.stat-value.gold{color:var(--gold)}
+.stat-suffix{font-size:16px;font-weight:400;color:var(--text-dim);letter-spacing:0}
+.content-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;overflow:hidden;backdrop-filter:blur(20px);transition:all 0.25s}
+.card:hover{border-color:var(--border-hover);box-shadow:0 8px 32px rgba(0,0,0,0.3);transform:translateY(-2px)}
+.card-header{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1px solid var(--border)}
+.card-title{font-size:14px;font-weight:700}
+.card-title::before{content:'';display:inline-block;width:3px;height:14px;background:var(--accent);border-radius:2px;margin-right:10px;vertical-align:middle}
+.badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700}
+.badge.premium{background:rgba(201,169,110,0.15);color:var(--gold)}
+.badge.pro{background:rgba(212,73,15,0.15);color:var(--accent)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{padding:10px 16px;font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;text-align:left;border-bottom:1px solid var(--border);background:rgba(255,255,255,0.02);white-space:nowrap}
+th:first-child{padding-left:22px}
+th:last-child{padding-right:22px}
+td{padding:13px 16px;font-size:13px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle}
+td:first-child{padding-left:22px}
+td:last-child{padding-right:22px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.02)}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-size:12px;font-weight:800}
+.rank-badge.g{background:linear-gradient(135deg,#c9a96e,#e8d5a3,#c9a96e);color:#3d2e0a;box-shadow:0 0 10px rgba(201,169,110,0.4)}
+.rank-badge.s{background:linear-gradient(135deg,#8a9ba8,#c5d5e5,#8a9ba8);color:#1a2530}
+.rank-badge.b{background:linear-gradient(135deg,#a0613a,#cd9a6e,#a0613a);color:#2a1505}
+.team-cell{display:flex;align-items:center;gap:10px}
+.team-logo{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.06);object-fit:contain;flex-shrink:0}
+.team-name{font-weight:600;cursor:pointer}
+.team-name:hover{color:var(--gold)}
+.rating-val{font-weight:700;color:var(--accent);font-size:14px}
+.record-cell{font-size:12px;color:var(--text-dim)}
+.record-cell .w{color:#4ade80;font-weight:700}
+.record-cell .l{color:#f87171;font-weight:700}
+.win-bar-wrap{display:flex;align-items:center;gap:8px}
+.win-bar{flex:1;height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;min-width:60px}
+.win-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),#f97316);border-radius:2px;transition:width 0.5s ease}
+.win-bar-rate{font-size:12px;color:var(--text-dim);min-width:38px}
+.right-col{display:flex;flex-direction:column;gap:16px}
+.league-item{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.league-item:last-child{border-bottom:none}
+.league-item:hover{background:rgba(255,255,255,0.03)}
+.league-name{font-size:13px;font-weight:500}
+.wr-item{display:flex;align-items:center;gap:10px;padding:8px 18px;border-bottom:1px solid rgba(255,255,255,0.04)}
+.wr-item:last-child{border-bottom:none}
+.wr-item:hover{background:rgba(255,255,255,0.03)}
+.wr-rank{font-size:12px;color:var(--text-muted);min-width:18px}
+.wr-rank.top{color:var(--gold);font-weight:800}
+.wr-logo{width:22px;height:22px;border-radius:5px;background:rgba(255,255,255,0.06);object-fit:contain;flex-shrink:0}
+.wr-name{flex:1;font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wr-val{font-size:13px;font-weight:700;color:#4ade80}
+.match-list{padding:12px}
+.match-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:12px;padding:14px 16px;margin-bottom:10px;transition:all 0.2s}
+.match-card:last-child{margin-bottom:0}
+.match-card:hover{border-color:rgba(212,73,15,0.25);background:rgba(212,73,15,0.04);transform:translateY(-1px)}
+.match-header{display:flex;justify-content:space-between;margin-bottom:10px}
+.match-league{font-size:11px;color:var(--text-muted);font-weight:600}
+.match-time{font-size:11px;color:var(--text-muted)}
+.match-teams{display:flex;align-items:center;gap:12px}
+.match-team{display:flex;align-items:center;gap:8px;flex:1}
+.match-team.right{flex-direction:row-reverse;text-align:right}
+.match-team-name{font-size:14px;font-weight:700}
+.match-team-logo{width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.06);object-fit:contain;flex-shrink:0}
+.match-badge{font-size:9px;font-weight:800;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:0.5px;flex-shrink:0}
+.match-badge.win{background:rgba(74,222,128,0.15);color:#4ade80}
+.match-badge.loss{background:rgba(255,255,255,0.05);color:var(--text-muted)}
+.match-score{font-size:22px;font-weight:900;min-width:44px;text-align:center;flex-shrink:0}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.8);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.active{display:flex}
+.modal{background:rgba(16,17,23,0.98);border:1px solid var(--border-hover);border-radius:20px;width:100%;max-width:620px;max-height:85vh;overflow-y:auto;backdrop-filter:blur(40px)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(16,17,23,0.98);z-index:1}
+.modal-team{display:flex;align-items:center;gap:14px}
+.modal-logo{width:52px;height:52px;border-radius:12px;background:rgba(255,255,255,0.06);object-fit:contain}
+.modal-name{font-size:20px;font-weight:800}
+.modal-tag{font-size:12px;color:var(--text-muted);margin-top:2px}
+.modal-close-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;font-family:inherit}
+.modal-close-btn:hover{background:rgba(255,255,255,0.1);border-color:var(--border-hover)}
+.modal-body{padding:24px}
+.modal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+.modal-stat{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center}
+.modal-stat-val{font-size:22px;font-weight:900;color:var(--accent)}
+.modal-stat-val.gold{color:var(--gold)}
+.modal-stat-val.dim{color:var(--text-dim)}
+.modal-stat-label{font-size:10px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px}
+.modal-section-title{font-size:12px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.modal-player{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.modal-player:last-child{border-bottom:none}
+.modal-avatar{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.06);flex-shrink:0}
+.modal-player-name{font-size:13px;font-weight:600;flex:1}
+.modal-player-games{font-size:11px;color:var(--text-muted)}
+.modal-link{text-align:center;margin-top:16px}
+.modal-link a{color:var(--accent);font-size:12px;text-decoration:none;font-weight:600}
+.modal-link a:hover{text-decoration:underline}
+.loading{text-align:center;padding:40px;color:var(--text-muted);font-size:13px}
+.empty{text-align:center;padding:40px;color:var(--text-muted);font-size:13px}
+footer{text-align:center;padding:32px 24px;color:var(--text-muted);font-size:12px;border-top:1px solid var(--border);margin-top:40px}
+footer a{color:var(--text-dim);text-decoration:none}
+footer a:hover{color:var(--gold)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+@media(max-width:1024px){.content-grid{grid-template-columns:1fr}.right-col{order:-1}}
+@media(max-width:768px){.stats-row{grid-template-columns:1fr}.hero-title{font-size:26px}.stat-value{font-size:32px}}
+</style>
+</head>
+<body>
+<header class="header">
+<div class="header-inner">
+<div class="header-top">
+<div class="logo">凌悦<span>电竞</span>数据</div>
+<div class="header-right">
+<button class="btn" id="refreshBtn">刷新</button>
+</div>
+</div>
+<nav class="game-tabs">
+<div class="game-tab active" onclick="return false">DOTA2</div>
+<div class="game-tab disabled">英雄联盟</div>
+<div class="game-tab disabled">CS2</div>
+</nav>
+</div>
+</header>
+<div class="sub-nav">
+<div class="sub-nav-inner">
+<button class="sub-tab active" id="subRankings">排名</button>
+<button class="sub-tab" id="subRecent">近期赛果</button>
+<div class="sub-meta">
+<span><span class="live-dot"></span> Live</span>
+<span id="lastUpdate">--</span>
+</div>
+</div>
+</div>
+<div class="main">
+<div id="tabRankings" class="tab-content active">
+<div class="hero">
+<h1 class="hero-title">DOTA2 全球战队排名</h1>
+<p class="hero-sub">基于 OpenDota 全球赛事数据实时更新</p>
+<div class="stats-row">
+<div class="stat-card"><div class="stat-label">收录战队</div><div class="stat-value accent" id="statTeams">--<span class="stat-suffix">支</span></div></div>
+<div class="stat-card"><div class="stat-label">近期比赛</div><div class="stat-value gold" id="statMatches">--<span class="stat-suffix">场</span></div></div>
+<div class="stat-card"><div class="stat-label">收录联赛</div><div class="stat-value" id="statLeagues">--<span class="stat-suffix">个</span></div></div>
+</div>
+</div>
+<div class="content-grid">
+<div>
+<div class="card">
+<div class="card-header"><span class="card-title">战队排行榜</span><span style="font-size:12px;color:var(--text-muted)" id="rankingsCount">--</span></div>
+<div class="table-wrap">
+<table><thead><tr><th style="width:44px">#</th><th>战队</th><th style="width:70px">Rating</th><th style="width:90px">胜/负</th><th style="width:120px">胜率</th></tr></thead>
+<tbody id="rankingsBody"><tr><td colspan="5" class="loading">加载中...</td></tr></tbody>
+</table>
+</div></div>
+<div class="card" style="margin-top:16px">
+<div class="card-header"><span class="card-title">近期赛果</span></div>
+<div id="recentBody"><div class="loading">加载中...</div></div>
+</div>
+</div>
+<div class="right-col">
+<div class="card">
+<div class="card-header"><span class="card-title">热门联赛</span></div>
+<div id="leaguesBody"><div class="loading">加载中...</div></div>
+</div>
+<div class="card" style="margin-top:16px">
+<div class="card-header"><span class="card-title">胜率排行</span></div>
+<div id="wrBody"><div class="loading">加载中...</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer>
+<p>数据来源 <a href="https://www.opendota.com" target="_blank">OpenDota</a> &middot; LOL 数据暂不可用</p>
+</footer>
+<div class="modal-overlay" id="teamModal">
+<div class="modal">
+<div class="modal-header">
+<div class="modal-team"><img class="modal-logo" id="modalLogo" src="" alt=""><div><div class="modal-name" id="modalName">--</div><div class="modal-tag" id="modalTag">--</div></div></div>
+<button class="modal-close-btn" id="modalClose">&times;</button>
+</div>
+<div class="modal-body" id="modalBody"><div class="loading">加载中...</div></div>
+</div>
+</div>
+<script>
+var API=window.location.origin;
+function $(id){return document.getElementById(id)}
+function fmtTime(ts){if(!ts)return'--';var d=new Date(ts*1000);return(d.getMonth()+1)+'/'+d.getDate()+' '+(d.getHours()+'').padStart(2,'0')+':'+(d.getMinutes()+'').padStart(2,'0')}
+function rankBadge(r){if(r==1)return'<span class="rank-badge g">1</span>';if(r==2)return'<span class="rank-badge s">2</span>';if(r==3)return'<span class="rank-badge b">3</span>';return'<span style="font-size:13px;color:var(--text-muted)">'+r+'</span>'}
+async function fetchJSON(url){try{var r=await fetch(url);return r.ok?r.json():null}catch(e){return null}}
+function imgErr(img){img.style.display='none'}
+async function loadRankings(){var data=await fetchJSON(API+'/rankings/?limit=50');var tbody=$('rankingsBody');if(!data||!data.length){tbody.innerHTML='<tr><td colspan="5" class="empty">暂无数据</td></tr>';return}var html='';data.forEach(function(t,i){var r=i+1;var logo=t.logo_url?'<img class="team-logo" src="'+t.logo_url+'" onerror="imgErr(this)">':'<span style="display:inline-block;width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.06)"></span>';html+='<tr><td>'+rankBadge(r)+'</td><td><div class="team-cell">'+logo+'<span class="team-name" onclick="openTeam('+t.team_id+',\''+(t.name||'').replace(/'/g,"\\'")+'\')">'+(t.name||'Unknown')+'</span></div></td><td class="rating-val">'+Math.round(t.rating||0)+'</td><td class="record-cell"><span class="w">'+t.wins+'</span> / <span class="l">'+t.losses+'</span></td><td><div class="win-bar-wrap"><div class="win-bar"><div class="win-bar-fill" style="width:'+t.win_rate+'%"></div></div><span class="win-bar-rate">'+t.win_rate+'%</span></div></td></tr>'});tbody.innerHTML=html;$('statTeams').innerHTML=(data.length||0)+'<span class="stat-suffix">支</span>';$('rankingsCount').textContent=data.length+' 战队';var topWR=data.filter(function(t){return(t.wins+t.losses)>=20}).sort(function(a,b){return b.win_rate-a.win_rate}).slice(0,8);var wrHtml='';topWR.forEach(function(t,i){var logo=t.logo_url?'<img class="wr-logo" src="'+t.logo_url+'" onerror="this.style.display=\'none\'">':'';wrHtml+='<div class="wr-item" onclick="openTeam('+t.team_id+',\''+(t.name||'').replace(/'/g,"\\'")+'\')"><span class="wr-rank '+(i<3?'top':'')+'">'+t.rank+'</span>'+logo+'<span class="wr-name">'+(t.name||'Unknown')+'</span><span class="wr-val">'+t.win_rate+'%</span></div>'});$('wrBody').innerHTML=wrHtml||'<div class="empty">暂无数据</div>';$('lastUpdate').textContent='更新: '+fmtTime(Math.floor(Date.now()/1000))}
+async function loadRecent(){var data=await fetchJSON(API+'/matches/recent?limit=30');var list=$('recentBody');if(!data||!data.length){list.innerHTML='<div class="empty" style="padding:24px;text-align:center">暂无比赛记录</div>';return}$('statMatches').innerHTML=(data.length||0)+'<span class="stat-suffix">场</span>';var html='';data.slice(0,10).forEach(function(m){var rWon=m.radiant_win;var rName=m.radiant_name||'Radiant',dName=m.dire_name||'Dire';var rLogo=m.radiant_team_id?'<img class="match-team-logo" src="https://api.opendota.com/api/teams/'+m.radiant_team_id+'/logo" onerror="imgErr(this)">':'';var dLogo=m.dire_team_id?'<img class="match-team-logo" src="https://api.opendota.com/api/teams/'+m.dire_team_id+'/logo" onerror="imgErr(this)">':'';html+='<div class="match-card"><div class="match-header"><span class="match-league">'+(m.league_name||'职业联赛')+'</span><span class="match-time">'+fmtTime(m.start_time)+'</span></div><div class="match-teams"><div class="match-team"><span class="match-badge '+(rWon?'win':'loss')+'">'+(rWon?'WIN':'LOSS')+'</span><span style="'+(rWon?'':'opacity:0.5')+'">'+rName+'</span>'+rLogo+'</div><div class="match-score" style="color:var(--text-muted);font-size:16px;font-weight:600">'+m.radiant_score+' : '+m.dire_score+'</div><div class="match-team right">'+dLogo+'<span style="'+(rWon?'opacity:0.5':'')+'">'+dName+'</span><span class="match-badge '+(rWon?'loss':'win')+'">'+(rWon?'LOSS':'WIN')+'</span></div></div></div>'});list.innerHTML=html}
+async function loadLeagues(){var data=await fetchJSON(API+'/leagues?limit=20');var list=$('leaguesBody');if(!data||!data.length){list.innerHTML='<div class="empty" style="padding:20px;text-align:center">暂无联赛数据</div>';return}$('statLeagues').innerHTML=(data.length||0)+'<span class="stat-suffix">个</span>';var major=data.filter(function(l){return l.tier==='premium'||l.tier==='professional'}).slice(0,8);if(!major.length)major=data.slice(0,8);var html='';major.forEach(function(l){var tc=l.tier==='premium'?'premium':'pro';html+='<div class="league-item"><span class="league-name">'+(l.name||'Unknown')+'</span><span class="badge '+tc+'">'+(l.tier||'').toUpperCase()+'</span></div>'});list.innerHTML=html}
+function openTeam(id,name){$('teamModal').classList.add('active');$('modalName').textContent=name||'加载中...';$('modalBody').innerHTML='<div class="loading">加载中...</div>';document.body.style.overflow='hidden';fetchTeam(id)}
+function closeTeam(){$('teamModal').classList.remove('active');document.body.style.overflow=''}
+$('modalClose').onclick=closeTeam;$('teamModal').onclick=function(e){if(e.target===this)closeTeam()};
+async function fetchTeam(id){var team=await fetchJSON('https://api.opendota.com/api/teams/'+id);var players=await fetchJSON('https://api.opendota.com/api/teams/'+id+'/players');if(!team){$('modalBody').innerHTML='<div class="empty">加载失败</div>';return}var logo=team.logo_url?'<img class="modal-logo" src="'+team.logo_url+'" onerror="this.style.display=\'none\'">':'<span style="display:inline-block;width:52px;height:52px;border-radius:12px;background:rgba(255,255,255,0.06)"></span>';document.getElementById('modalLogo').outerHTML=logo;$('modalName').textContent=team.name||'Unknown';$('modalTag').textContent='['+(team.tag||'')+']';var wins=team.wins||0,losses=team.losses||0,total=wins+losses,wr=total>0?(wins/total*100).toFixed(1):0;var html='<div class="modal-stats"><div class="modal-stat"><div class="modal-stat-val gold">'+wins+'</div><div class="modal-stat-label">胜场</div></div><div class="modal-stat"><div class="modal-stat-val dim">'+losses+'</div><div class="modal-stat-label">败场</div></div><div class="modal-stat"><div class="modal-stat-val">'+wr+'%</div><div class="modal-stat-label">胜率</div></div></div>';html+='<div style="background:rgba(212,73,15,0.08);border:1px solid rgba(212,73,15,0.2);border-radius:12px;padding:16px;text-align:center;margin-bottom:20px"><div style="font-size:32px;font-weight:900;background:linear-gradient(135deg,#f0ebe0,var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent">'+Math.round(team.rating||0)+'</div><div style="font-size:10px;color:var(--text-muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px">战队 Rating</div></div>';if(players&&players.length>0){var cur=players.filter(function(p){return p.is_current_team_member}).slice(0,5);if(cur.length>0){html+='<div class="modal-section-title">现役成员 ('+cur.length+'人)</div>';cur.forEach(function(p){var pw=p.games_played>0?Math.round(p.wins/p.games_played*100):0;html+='<div class="modal-player"><img class="modal-avatar" src="https://api.opendota.com/api/players/'+p.account_id+'/avatar" onerror="imgErr(this)"><span class="modal-player-name">'+(p.name||'Unknown')+'</span><span class="modal-player-games">'+p.games_played+'场 '+pw+'%</span></div>'})}}html+='<div class="modal-link"><a href="https://www.opendota.com/teams/'+id+'" target="_blank">在 OpenDota 查看完整数据</a></div>';$('modalBody').innerHTML=html}
+$('subRankings').onclick=function(){$('subRankings').classList.add('active');$('subRecent').classList.remove('active')};
+$('subRecent').onclick=function(){$('subRecent').classList.add('active');$('subRankings').classList.remove('active')};
+$('refreshBtn').onclick=function(){loadRankings();loadRecent();loadLeagues()};
+document.addEventListener('DOMContentLoaded',function(){loadRankings();loadRecent();loadLeagues()});
+</script>
+</body>
+</html>
