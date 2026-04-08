@@ -142,6 +142,14 @@ curl -s "https://push2delay.eastmoney.com/api/qt/clist/get?pn=1&pz=100&po=1&np=1
 
 ---
 
+## Word .doc 文件读取
+- 使用 `olefile` + UTF-16-LE 解码可直接读取老版 .doc 文件内容
+- python-docx 只支持 .docx（新格式），不支持 .doc（老格式）
+- 示例代码：
+  ole = olefile.OleFileIO(path)
+  data = ole.openstream('WordDocument').read()
+  text = data.decode('utf-16-le', errors='ignore')
+
 ## 技术笔记
 - pip在WSL里没有权限安装，需要找其他方式
 - 东方财富API用push2delay.eastmoney.com域名可以稳定访问
